@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import InputField from './components/InputField';
 import PredictionResult from './components/PredictionResult';
 import { getPrediction } from './services/api';
-import { PackageSearch, CalendarDays, TrendingUp, AlertTriangle } from 'lucide-react';
 
 const AntigravityCore = () => {
   const [inputs, setInputs] = useState({
@@ -15,181 +14,170 @@ const AntigravityCore = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Firma de Autoría Protegida
-  useEffect(() => {
-    const authorInfo = {
-      Lead_Developer: "Ana Milena Chaves (Alenna Art)",
-      System: "Antigravity Core V4.2",
-      Certification: "Bootcamp AI Integrator 2026",
-      Rights: "Proprietary Logic - Commercial Use Pending"
-    };
-    console.log("%c⚠️ PROPIEDAD INTELECTUAL DETECTADA", "color: orange; font-weight: bold; font-size: 15px;");
-    console.table(authorInfo);
-  }, []);
+  const tips = {
+    family: "Categorización del producto para análisis de segmentación.",
+    cluster: "Zona geográfica o grupo de tiendas específico.",
+    promo: "Ajuste de demanda basado en campañas de marketing activas.",
+    oil: "Impacto directo en el costo de transporte y flete logístico.",
+    day: "Día a proyectar en la cadena de suministro.",
+    payday: "Aumento natural de liquidez en el cierre de quincena.",
+    holiday: "Influencia de cierres o festividades en el flujo de entrega.",
+    earthquake: "Afectación mayor o desastre natural en la cadena de suministro.",
+    trans_lag: "Histórico de tráfico (cantidad de tickets) de la semana previa.",
+    sales_lag: "Histórico de ventas para establecer tendencias de mercado."
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: parseFloat(value) || 0 }));
   };
 
-  const ejecutarPrediccion = async () => {
+  const ejecutarAnalisis = async () => {
     setLoading(true);
     setError(null);
     setPrediction(null);
 
     try {
+      // ¡LLAMADA REAL A AWS Sagemaker! No a una simulación de 832.3
       const pred = await getPrediction(inputs);
       setPrediction(pred);
     } catch (err) {
-      setError("Fallo en la conexión. Verifica los registros del servidor o intenta más tarde.");
+      setError("Fallo en la conexión AWS. Verifica los logs del sistema.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Configuración estructurada para agrupar campos logícamente
-  const formSections = [
-    {
-      title: "Contexto del Producto",
-      icon: <PackageSearch className="w-4 h-4 text-cyan-400" />,
-      fields: [
-        { name: 'family', label: 'Categoría de Producto', type: 'number', helperText: 'ID interno del grupo de productos' },
-        { name: 'cluster', label: 'Zona Geográfica (Cluster)', type: 'number', helperText: 'Zona geográfica o grupo de tiendas específico.' },
-        { name: 'promo', label: '¿Hay Campaña de Descuentos?', type: 'binary', helperText: 'Actualmente en descuento o campaña' },
-      ]
-    },
-    {
-      title: "Impacto Macroeconómico & Variables Críticas",
-      icon: <AlertTriangle className="w-4 h-4 text-rose-400" />,
-      fields: [
-        { name: 'oil', label: 'Costo de Combustible (Petróleo)', type: 'number', helperText: 'Influye en el costo del flete y transporte.' },
-        { name: 'earthquake', label: 'Alerta de Desastre Natural', type: 'binary', helperText: 'Afectación mayor en la cadena de suministro' },
-      ]
-    },
-    {
-      title: "Calendario y Patrones de Consumo",
-      icon: <CalendarDays className="w-4 h-4 text-indigo-400" />,
-      fields: [
-        { 
-          name: 'day', 
-          label: 'Día de la Semana', 
-          type: 'select', 
-          options: [
-            {value: 1, label: 'Lunes'}, {value: 2, label: 'Martes'}, {value: 3, label: 'Miércoles'},
-            {value: 4, label: 'Jueves'}, {value: 5, label: 'Viernes'}, {value: 6, label: 'Sábado'}, {value: 7, label: 'Domingo'}
-          ],
-          helperText: 'Día a proyectar'
-        },
-        { name: 'payday', label: '¿Es Día de Pago (Quincena)?', type: 'binary', helperText: 'Aumento natural de liquidez' },
-        { name: 'holiday', label: '¿Es un Día Festivo?', type: 'binary', helperText: 'Festividad local o nacional' },
-      ]
-    },
-    {
-      title: "Histórico de Tráfico (Hace 1 semana)",
-      icon: <TrendingUp className="w-4 h-4 text-emerald-400" />,
-      fields: [
-        { name: 'trans_lag', label: 'Tráfico de Clientes', type: 'number', helperText: 'Cantidad de tickets generados previamente' },
-        { name: 'sales_lag', label: 'Ventas del Mes Anterior', type: 'number', helperText: 'Referencia de cuánto se vendió el mes pasado para proyectar tendencia.' },
+  // Configuración de los campos avanzados que ya construimos
+  const formFields = [
+    { name: 'family', label: 'Categoría de Producto', type: 'number' },
+    { name: 'oil', label: 'Costo de Combustible (Petróleo)', type: 'number' },
+    { name: 'promo', label: '¿Hay Campaña de Descuentos?', type: 'binary' },
+    { name: 'holiday', label: '¿Es un Día Festivo?', type: 'binary' },
+    { name: 'sales_lag', label: 'Ventas del Mes Anterior', type: 'number' },
+    { name: 'cluster', label: 'Zona Geográfica (Cluster)', type: 'number' },
+    { name: 'earthquake', label: 'Alerta de Desastre Natural', type: 'binary' },
+    { name: 'payday', label: '¿Es Día de Pago (Quincena)?', type: 'binary' },
+    { name: 'trans_lag', label: 'Tráfico de Clientes (Semana Pasada)', type: 'number' },
+    { 
+      name: 'day', 
+      label: 'Día de la Semana', 
+      type: 'select',
+      options: [
+        {value: 1, label: 'Lunes'}, {value: 2, label: 'Martes'}, {value: 3, label: 'Miércoles'},
+        {value: 4, label: 'Jueves'}, {value: 5, label: 'Viernes'}, {value: 6, label: 'Sábado'}, {value: 7, label: 'Domingo'}
       ]
     }
   ];
 
   return (
-    <div className="min-h-screen bg-[#060913] p-4 sm:p-8 text-slate-200 font-sans selection:bg-orange-500 selection:text-white flex flex-col items-center relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 p-4 sm:p-8 text-slate-200 font-sans relative overflow-hidden">
       
       {/* Background Ambience */}
-      <div className="fixed top-[-20%] left-[-10%] w-[50%] h-[50%] bg-orange-600/5 blur-[150px] rounded-full pointer-events-none"></div>
-      <div className="fixed bottom-[-20%] right-[-10%] w-[40%] h-[40%] bg-cyan-600/5 blur-[150px] rounded-full pointer-events-none"></div>
-
-      <div className="w-full max-w-4xl relative z-10 space-y-8 pb-20">
+      <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-orange-600/5 blur-[150px] rounded-full pointer-events-none"></div>
+      
+      <div className="max-w-5xl mx-auto space-y-8 relative z-10">
         
-        {/* Header Elegante */}
-        <header className="bg-slate-900/40 backdrop-blur-md border border-slate-700/50 rounded-3xl p-8 shadow-2xl flex flex-col md:flex-row items-center justify-between mt-4">
+        {/* Cabecera Profesional (Adaptada al nuevo diseño) */}
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-slate-800 pb-6">
           <div>
-            <h1 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-rose-400 to-fuchsia-500 drop-shadow-sm tracking-tight mb-2">
-              Antigravity Predictor
-            </h1>
-            <p className="text-slate-400 text-sm max-w-lg leading-relaxed">
-              Sistema Inteligente de Abastecimiento. Configura las variables del entorno logístico para calcular con exactitud la demanda de inventario.
-            </p>
+            <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter drop-shadow-md">EASY SUPPLY</h1>
+            <p className="text-orange-500 font-bold tracking-widest text-xs mt-2 italic">CLOUD ARCHITECTURE • INTEGRADOR 2026</p>
           </div>
-          <div className="mt-6 md:mt-0 flex flex-col gap-2">
-            <div className="px-4 py-1.5 bg-slate-950/80 border border-slate-800/80 rounded-full flex items-center gap-2 shadow-inner w-max">
-              <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-[pulse_1.5s_infinite_ease-in-out]"></div>
-              <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">IA Engine: <span className="text-slate-200">Conectado a SageMaker</span></span>
-            </div>
-            <div className="px-4 py-1.5 bg-slate-950/80 border border-slate-800/80 rounded-full flex items-center gap-2 shadow-inner w-max">
-              <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-[pulse_1.5s_infinite_ease-in-out]" style={{animationDelay: '0.3s'}}></div>
-              <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">Database: <span className="text-slate-200">Sincronizado DynamoDB</span></span>
-            </div>
-            <div className="px-4 py-1.5 bg-slate-950/80 border border-slate-800/80 rounded-full flex items-center gap-2 shadow-inner w-max">
-              <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-[pulse_1.5s_infinite_ease-in-out]" style={{animationDelay: '0.6s'}}></div>
-              <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">Status: <span className="text-slate-200">Datos en Tiempo Real</span></span>
-            </div>
+          <div className="mt-4 md:mt-0 text-right text-[10px] text-slate-500 uppercase flex flex-col gap-1 items-end">
+             <div className="flex items-center gap-2">
+               Sistema Cognito: <span className="text-green-500 font-bold flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> ACTIVO</span>
+             </div>
+             <div className="flex items-center gap-2">
+               IA SageMaker: <span className="text-green-500 font-bold flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" style={{animationDelay: '0.3s'}}></span> ONLINE</span>
+             </div>
           </div>
         </header>
 
-        {/* Zona de Formularios Organizada */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {formSections.map((section, idx) => (
-            <div key={idx} className="bg-slate-900/60 backdrop-blur-md border border-slate-700/40 rounded-3xl p-6 shadow-xl hover:border-slate-600/60 transition-colors">
-              <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800/60">
-                <div className="p-2 bg-slate-950 rounded-lg shadow-inner">
-                  {section.icon}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          
+          {/* Lado A: Configuración de Escenario */}
+          <section className="bg-slate-900/60 backdrop-blur-md p-6 md:p-8 rounded-3xl border border-slate-800 shadow-xl space-y-5">
+            <h3 className="text-sm font-bold text-slate-400 uppercase tracking-widest border-b border-slate-800/80 pb-3 mb-5">
+              Configuración de Escenario Logístico
+            </h3>
+            
+            <div className="space-y-4">
+              {formFields.map((field) => (
+                <div key={field.name} className="relative group/field">
+                   <div className="flex justify-between items-center mb-1">
+                     <label className="text-xs font-bold uppercase text-slate-500">{field.label}</label>
+                     <span className="cursor-help text-orange-500/60 hover:text-orange-400 text-xs font-black transition-colors" title={tips[field.name]}>
+                       [?]
+                     </span>
+                   </div>
+                   <InputField
+                      key={field.name}
+                      name={field.name}
+                      type={field.type}
+                      options={field.options}
+                      value={inputs[field.name]}
+                      onChange={handleChange}
+                    />
                 </div>
-                <h2 className="text-sm font-bold text-slate-200 tracking-wide">{section.title}</h2>
-              </div>
-              
-              <div className="space-y-6">
-                {section.fields.map((field) => (
-                  <InputField
-                    key={field.name}
-                    label={field.label}
-                    name={field.name}
-                    type={field.type}
-                    options={field.options}
-                    helperText={field.helperText}
-                    value={inputs[field.name]}
-                    onChange={handleChange}
-                  />
-                ))}
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* Botón Flotante Magnético */}
-        <div className="sticky bottom-8 z-50 mt-12 flex justify-center w-full">
-          <button
-            onClick={ejecutarPrediccion}
-            disabled={loading}
-            className={`w-full max-w-md py-5 rounded-2xl font-black text-sm tracking-[0.2em] transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center gap-3 ${
-              loading 
-                ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700 shadow-none' 
-                : 'bg-gradient-to-r from-orange-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white shadow-[0_15px_40px_rgba(249,115,22,0.3)] hover:shadow-[0_20px_50px_rgba(249,115,22,0.5)] border border-orange-500/50 hover:-translate-y-2'
-            }`}
-          >
-            {loading ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white/50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                CALCULANDO...
-              </>
-            ) : (
-              'PROYECTAR ESCENARIO AWS'
+            <button 
+              onClick={ejecutarAnalisis}
+              disabled={loading}
+              className={`w-full py-4 mt-6 rounded-2xl font-black text-xs tracking-[0.2em] transition-all shadow-lg flex items-center justify-center gap-2 ${
+                loading 
+                  ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                  : 'bg-gradient-to-r from-orange-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white shadow-[0_10px_20px_rgba(249,115,22,0.3)] hover:-translate-y-1 hover:shadow-[0_15px_25px_rgba(249,115,22,0.5)]'
+              }`}
+            >
+              {loading ? (
+                <>
+                  <svg className="animate-spin h-5 w-5 text-white/50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  CALCULANDO IMPACTO...
+                </>
+              ) : "GENERAR PREDICCIÓN"}
+            </button>
+
+            {error && (
+              <div className="p-3 bg-red-950/40 border border-red-500/30 rounded-xl text-red-400 text-center text-xs font-semibold animate-pulse">
+                {error}
+              </div>
             )}
-          </button>
+          </section>
+
+          {/* Lado B: Resultados e Inteligencia de Negocio */}
+          <section className="h-full flex flex-col">
+            {prediction !== null ? (
+              <div className="flex-1 animate-in fade-in slide-in-from-right-4 duration-500 flex flex-col">
+                <PredictionResult prediction={prediction} />
+              </div>
+            ) : (
+              <div className="flex-1 flex flex-col items-center justify-center border-2 border-dashed border-slate-800/80 bg-slate-900/20 rounded-3xl p-10 mt-6 lg:mt-0">
+                <div className="w-16 h-16 rounded-full bg-slate-800/50 flex items-center justify-center mb-6">
+                   <svg className="w-8 h-8 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                </div>
+                <p className="text-slate-500 text-center text-xs uppercase tracking-widest leading-relaxed max-w-xs">
+                  Esperando configuración de escenario logístico para procesar en la nube AWS...
+                </p>
+              </div>
+            )}
+          </section>
+
         </div>
 
-        <PredictionResult prediction={prediction} />
-
-        {error && (
-          <div className="mt-6 p-4 bg-red-950/40 border border-red-500/30 rounded-xl text-red-400 text-center text-xs font-semibold animate-pulse max-w-2xl mx-auto">
-            {error}
+        {/* Footer Técnico [cite: 95] */}
+        <footer className="text-[10px] text-slate-600 flex flex-col md:flex-row items-center justify-between uppercase tracking-widest pt-10 border-t border-slate-800/50">
+          <div className="mb-2 md:mb-0 text-center md:text-left">Arquitectura Integrada: S3 • Lambda • DynamoDB • SageMaker</div>
+          <div className="font-bold flex items-center gap-2">
+            © 2026 Easy Supply System <span className="px-2 py-1 bg-slate-800 rounded-md text-[8px] text-slate-400 ml-2">ALENNA ART</span>
           </div>
-        )}
+        </footer>
       </div>
     </div>
   );
