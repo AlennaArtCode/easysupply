@@ -51,12 +51,12 @@ const AntigravityCore = () => {
 
   // Configuración de los campos avanzados que ya construimos
   const formFields = [
-    { name: 'family', label: 'Línea de Distribución', type: 'number' },
+    { name: 'family', label: 'Categoría de Producto', type: 'number' },
     { name: 'oil', label: 'Costo de Combustible (Petróleo)', type: 'number' },
-    { name: 'promo', label: 'Estrategia Comercial', type: 'binary' },
+    { name: 'promo', label: 'Estrategia Comercial (Promociones)', type: 'binary' },
     { name: 'holiday', label: '¿Es un Día Festivo?', type: 'binary' },
     { name: 'sales_lag', label: 'Ventas del Mes Anterior', type: 'number' },
-    { name: 'cluster', label: 'Punto de Venta (Cluster)', type: 'number' },
+    { name: 'cluster', label: 'Punto de Venta (Ubicación)', type: 'number' },
     { name: 'earthquake', label: 'Alerta de Desastre Natural', type: 'binary' },
     { name: 'payday', label: '¿Es Día de Pago (Quincena)?', type: 'binary' },
     { name: 'trans_lag', label: 'Tráfico de Clientes (Semana Pasada)', type: 'number' },
