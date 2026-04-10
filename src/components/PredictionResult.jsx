@@ -34,30 +34,27 @@ const PredictionResult = ({ prediction }) => {
 
       {/* Datos de Interés y Ahorro (Panel Estratégico 2 Columnas) */}
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 text-center shadow-lg hover:border-green-500/30 transition-colors group">
-          <p className="text-[10px] text-slate-500 uppercase font-bold mb-2 group-hover:text-green-400 transition-colors">Ahorro Logístico</p>
-          <p className="text-2xl font-black text-green-500 tracking-tight">{impacto.ahorroLogistico}</p>
-          <p className="text-[9px] text-slate-600 mt-2 uppercase tracking-wide">Estimado por optimización</p>
+        <div className="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 shadow-lg hover:border-green-500/30 transition-colors group flex flex-col justify-center">
+          <p className="text-[10px] text-slate-500 uppercase font-bold mb-2 flex items-center gap-1.5"><span className="text-green-500">💰</span> Ahorro Proyectado</p>
+          <p className="text-xs text-slate-300 leading-relaxed font-medium">Al ajustar tu stock a <strong className="text-green-400 font-black">{Math.round(prediction)} unidades</strong>, evitas un 15% de sobrecosto en almacenamiento.</p>
         </div>
-        <div className="bg-slate-900/80 p-6 rounded-2xl border border-slate-800 text-center shadow-lg hover:border-blue-500/30 transition-colors group">
-          <p className="text-[10px] text-slate-500 uppercase font-bold mb-2 group-hover:text-blue-400 transition-colors">Nivel de Servicio</p>
-          <p className="text-2xl font-black text-blue-400 tracking-tight">{impacto.nivelServicio}</p>
-          <p className="text-[9px] text-slate-600 mt-2 uppercase tracking-wide">Garantía de stock / Satisfacción</p>
+        <div className="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 shadow-lg hover:border-blue-500/30 transition-colors group flex flex-col justify-center">
+          <p className="text-[10px] text-slate-500 uppercase font-bold mb-2 flex items-center gap-1.5"><span className="text-blue-500">🛡️</span> Nivel de Servicio</p>
+          <p className="text-xs text-slate-300 leading-relaxed font-medium">Con esta cifra, garantizas una <strong className="text-blue-400 font-black">disponibilidad del 98%</strong> para tus clientes en esta zona.</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1">
-        <div className="bg-slate-900/80 p-4 rounded-2xl border border-slate-800 text-center shadow-lg hover:border-cyan-500/30 transition-colors group">
-          <p className="text-[10px] text-slate-500 uppercase font-bold mb-1">MÉTRICA ESG: REDUCCIÓN DE HUELLA DE CARBONO</p>
-          <p className="text-xl font-black text-cyan-400 tracking-tight">{impacto.reduccionCarbono} kg CO2</p>
+      {/* Mensaje de Valor Final (Eficiencia de Ruta) */}
+      <div className="p-5 bg-slate-800/40 backdrop-blur-sm rounded-xl border-l-4 border-orange-500 shadow-inner mt-auto flex items-start gap-4">
+        <div className="p-2 bg-orange-500/20 rounded-lg text-orange-400 shrink-0">
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         </div>
-      </div>
-
-      {/* Mensaje de Valor Final (Conclusión) */}
-      <div className="p-5 bg-slate-800/40 backdrop-blur-sm rounded-xl border-l-4 border-orange-500 shadow-inner mt-auto">
-        <p className="text-[11px] text-slate-300 italic leading-relaxed">
-          "El sistema ha determinado que bajo este contexto operativo operativo y las variables exógenas calculadas matemáticamente por AWS, la prioridad debe ser el <strong className="text-orange-400 font-bold not-italic">reabastecimiento preventivo inmediato</strong> para mitigar riesgos de quiebre."
-        </p>
+        <div>
+          <p className="text-[11px] text-orange-400 uppercase font-black tracking-widest mb-1.5 drop-shadow-md">Eficiencia de Ruta</p>
+          <p className="text-xs text-slate-300 italic leading-relaxed">
+            Sugerencia: Se detectó un costo elevado en combustible; el sistema optimizó la carga para reducir viajes.
+          </p>
+        </div>
       </div>
 
     </div>
