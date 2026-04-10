@@ -22,7 +22,7 @@ const AntigravityCore = () => {
   const cargarHistorial = () => {
     setLoadingHistory(true);
     try {
-      const stored = localStorage.getItem('historico_sagemaker_db');
+      const stored = localStorage.getItem('tabla_temporal_presentacion');
       if (stored) {
         setHistory(JSON.parse(stored));
       } else {
@@ -73,9 +73,9 @@ const AntigravityCore = () => {
         fecha: new Date().toLocaleTimeString(),
         valor: pred
       };
-      const historialAnterior = JSON.parse(localStorage.getItem('historico_sagemaker_db') || '[]');
+      const historialAnterior = JSON.parse(localStorage.getItem('tabla_temporal_presentacion') || '[]');
       const historialActualizado = [nuevoRegistro, ...historialAnterior].slice(0, 50); // Guardamos max 50
-      localStorage.setItem('historico_sagemaker_db', JSON.stringify(historialActualizado));
+      localStorage.setItem('tabla_temporal_presentacion', JSON.stringify(historialActualizado));
       
       // Actualizamos estado visual
       cargarHistorial();
