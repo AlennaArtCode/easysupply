@@ -10,8 +10,8 @@ const InputField = ({ label, name, value, onChange, type = 'number', options = [
   };
 
   return (
-    <div className="flex flex-col space-y-2 group">
-      <label className="text-xs font-bold text-slate-400 group-focus-within:text-orange-400 transition-colors uppercase tracking-wider">
+    <div className="flex flex-col space-y-2 group" title={helperText}>
+      <label className="text-xs font-bold text-slate-400 group-focus-within:text-orange-400 transition-colors uppercase tracking-wider cursor-help">
         {label}
       </label>
       

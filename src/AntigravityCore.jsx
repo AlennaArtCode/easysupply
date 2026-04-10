@@ -53,17 +53,17 @@ const AntigravityCore = () => {
       title: "Contexto del Producto",
       icon: <PackageSearch className="w-4 h-4 text-cyan-400" />,
       fields: [
-        { name: 'family', label: 'Código de Familia', type: 'number', helperText: 'ID interno del grupo de productos' },
-        { name: 'cluster', label: 'Zona Geográfica (Cluster)', type: 'number', helperText: 'Región de tiendas a predecir' },
-        { name: 'promo', label: '¿Está en Promoción?', type: 'binary', helperText: 'Actualmente en descuento o campaña' },
+        { name: 'family', label: 'Categoría de Producto', type: 'number', helperText: 'ID interno del grupo de productos' },
+        { name: 'cluster', label: 'Zona Geográfica (Cluster)', type: 'number', helperText: 'Zona geográfica o grupo de tiendas específico.' },
+        { name: 'promo', label: '¿Hay Campaña de Descuentos?', type: 'binary', helperText: 'Actualmente en descuento o campaña' },
       ]
     },
     {
       title: "Impacto Macroeconómico & Variables Críticas",
       icon: <AlertTriangle className="w-4 h-4 text-rose-400" />,
       fields: [
-        { name: 'oil', label: 'Precio del Barril (WTI)', type: 'number', helperText: 'Cotización en USD del día' },
-        { name: 'earthquake', label: '¿Hubo un Sismo Hoy?', type: 'binary', helperText: 'Afectación mayor en la cadena de suministro' },
+        { name: 'oil', label: 'Costo de Combustible (Petróleo)', type: 'number', helperText: 'Influye en el costo del flete y transporte.' },
+        { name: 'earthquake', label: 'Alerta de Desastre Natural', type: 'binary', helperText: 'Afectación mayor en la cadena de suministro' },
       ]
     },
     {
@@ -81,7 +81,7 @@ const AntigravityCore = () => {
           helperText: 'Día a proyectar'
         },
         { name: 'payday', label: '¿Es Día de Pago (Quincena)?', type: 'binary', helperText: 'Aumento natural de liquidez' },
-        { name: 'holiday', label: '¿Es Día Festivo?', type: 'binary', helperText: 'Festividad local o nacional' },
+        { name: 'holiday', label: '¿Es un Día Festivo?', type: 'binary', helperText: 'Festividad local o nacional' },
       ]
     },
     {
@@ -89,7 +89,7 @@ const AntigravityCore = () => {
       icon: <TrendingUp className="w-4 h-4 text-emerald-400" />,
       fields: [
         { name: 'trans_lag', label: 'Tráfico de Clientes', type: 'number', helperText: 'Cantidad de tickets generados previamente' },
-        { name: 'sales_lag', label: 'Ventas Anteriores (UDS)', type: 'number', helperText: 'Volumen líquido vendido la semana anterior' },
+        { name: 'sales_lag', label: 'Ventas del Mes Anterior', type: 'number', helperText: 'Referencia de cuánto se vendió el mes pasado para proyectar tendencia.' },
       ]
     }
   ];
@@ -113,12 +113,19 @@ const AntigravityCore = () => {
               Sistema Inteligente de Abastecimiento. Configura las variables del entorno logístico para calcular con exactitud la demanda de inventario.
             </p>
           </div>
-          <div className="mt-6 md:mt-0 px-4 py-2 bg-slate-950/80 border border-slate-800 rounded-full flex items-center gap-3 shadow-inner">
-            <span className="relative flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-            </span>
-            <span className="text-[10px] uppercase tracking-widest text-slate-300 font-bold">Enlace AWS Activo</span>
+          <div className="mt-6 md:mt-0 flex flex-col gap-2">
+            <div className="px-4 py-1.5 bg-slate-950/80 border border-slate-800/80 rounded-full flex items-center gap-2 shadow-inner w-max">
+              <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-[pulse_1.5s_infinite_ease-in-out]"></div>
+              <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">IA Engine: <span className="text-slate-200">Conectado a SageMaker</span></span>
+            </div>
+            <div className="px-4 py-1.5 bg-slate-950/80 border border-slate-800/80 rounded-full flex items-center gap-2 shadow-inner w-max">
+              <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-[pulse_1.5s_infinite_ease-in-out]" style={{animationDelay: '0.3s'}}></div>
+              <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">Database: <span className="text-slate-200">Sincronizado DynamoDB</span></span>
+            </div>
+            <div className="px-4 py-1.5 bg-slate-950/80 border border-slate-800/80 rounded-full flex items-center gap-2 shadow-inner w-max">
+              <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-[pulse_1.5s_infinite_ease-in-out]" style={{animationDelay: '0.6s'}}></div>
+              <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold">Status: <span className="text-slate-200">Datos en Tiempo Real</span></span>
+            </div>
           </div>
         </header>
 
