@@ -36,7 +36,7 @@ export const getPrediction = async (inputs) => {
     base_pred = base_pred + oil_factor + holiday_factor + payday_factor + sales_factor + promo_factor + random_jitter;
   }
   
-  return base_pred;
+  return Number(base_pred.toFixed(1));
 };
 
 export const getPredictionHistory = async () => {
