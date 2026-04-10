@@ -63,8 +63,23 @@ const AntigravityCore = () => {
     setPrediction(null);
 
     try {
+      // Formatear los datos como el Tensor Neuronal que espera AWS
+      const tensor_payload = {
+        tensor: [
+          inputs.family,
+           inputs.oil,
+           inputs.day,
+           inputs.holiday,
+           inputs.payday,
+           inputs.sales_lag,
+           inputs.promo,
+           inputs.cluster || 0,
+           inputs.earthquake || 0
+        ]
+      };
+
       // ¡LLAMADA REAL A AWS Sagemaker! 
-      const pred = await getPrediction(inputs);
+      const pred = await getPrediction(tensor_payload);
       setPrediction(pred);
       
       // Guardado exitoso en LocalStorage (Simulando persistencia DB segura para el demo)
