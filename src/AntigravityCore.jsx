@@ -15,9 +15,9 @@ const AntigravityCore = () => {
   const [error, setError] = useState(null);
 
   const tips = {
-    family: "Categorización del producto para análisis de segmentación.",
-    cluster: "Zona geográfica o grupo de tiendas específico.",
-    promo: "Ajuste de demanda basado en campañas de marketing activas.",
+    family: "Define el comportamiento de demanda según el tipo de producto (Ej: Alimentos, Aseo).",
+    cluster: "Ubicación logística específica para optimizar el tiempo de entrega local.",
+    promo: "Ajusta la predicción basándose en el aumento de tráfico esperado por marketing.",
     oil: "Impacto directo en el costo de transporte y flete logístico.",
     day: "Día a proyectar en la cadena de suministro.",
     payday: "Aumento natural de liquidez en el cierre de quincena.",
@@ -51,12 +51,12 @@ const AntigravityCore = () => {
 
   // Configuración de los campos avanzados que ya construimos
   const formFields = [
-    { name: 'family', label: 'Categoría de Producto', type: 'number' },
+    { name: 'family', label: 'Línea de Distribución', type: 'number' },
     { name: 'oil', label: 'Costo de Combustible (Petróleo)', type: 'number' },
-    { name: 'promo', label: '¿Hay Campaña de Descuentos?', type: 'binary' },
+    { name: 'promo', label: 'Estrategia Comercial', type: 'binary' },
     { name: 'holiday', label: '¿Es un Día Festivo?', type: 'binary' },
     { name: 'sales_lag', label: 'Ventas del Mes Anterior', type: 'number' },
-    { name: 'cluster', label: 'Zona Geográfica (Cluster)', type: 'number' },
+    { name: 'cluster', label: 'Punto de Venta (Cluster)', type: 'number' },
     { name: 'earthquake', label: 'Alerta de Desastre Natural', type: 'binary' },
     { name: 'payday', label: '¿Es Día de Pago (Quincena)?', type: 'binary' },
     { name: 'trans_lag', label: 'Tráfico de Clientes (Semana Pasada)', type: 'number' },
