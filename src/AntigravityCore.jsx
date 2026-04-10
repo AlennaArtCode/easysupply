@@ -226,10 +226,9 @@ const AntigravityCore = () => {
                 </div>
               ) : history.length > 0 ? (
                 history.map((log, i) => {
-                  // Desempaquetado de estructura DynamoDB
-                  const isNumber = !isNaN(Number(log.proyeccion)) || !isNaN(Number(log.prediccion_ventas)) || !isNaN(Number(log.prediction));
-                  const rawVal = log.proyeccion || log.prediccion_ventas || log.prediction || log.valor || 0;
-                  const finalValor = isNumber ? Number(rawVal).toFixed(2) : 'Error';
+                  // Desempaquetado de estructura
+                  const rawVal = log.valor || log.proyeccion || log.prediccion_ventas || log.prediction || 0;
+                  const finalValor = !isNaN(Number(rawVal)) ? Number(rawVal).toFixed(2) : rawVal;
                   
                   return (
                     <div key={log.id || i} className="bg-slate-950 p-4 rounded-2xl border border-slate-800 border-l-4 border-l-orange-600 hover:border-l-orange-400 transition-colors">
