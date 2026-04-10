@@ -19,13 +19,17 @@ const AntigravityCore = () => {
   const [loadingHistory, setLoadingHistory] = useState(true);
 
   // Cargar historial inicial al montar el componente
-  const cargarHistorial = async () => {
+  const cargarHistorial = () => {
     setLoadingHistory(true);
     try {
-      const data = await getPredictionHistory();
-      setHistory(data);
+      const stored = localStorage.getItem('historico_sagemaker_db');
+      if (stored) {
+        setHistory(JSON.parse(stored));
+      } else {
+        setHistory([]);
+      }
     } catch (err) {
-      console.error("Error sincronizando historial con AWS DynamoDB:", err);
+      console.error("Error sincronizando caché local:", err);
     } finally {
       setLoadingHistory(false);
     }
@@ -59,12 +63,22 @@ const AntigravityCore = () => {
     setPrediction(null);
 
     try {
-      // ¡LLAMADA REAL A AWS Sagemaker! No a una simulación
+      // ¡LLAMADA REAL A AWS Sagemaker! 
       const pred = await getPrediction(inputs);
       setPrediction(pred);
       
-      // Tras generar uno nuevo, recargamos la tabla de DynamoDB
-      await cargarHistorial();
+      // Guardado exitoso en LocalStorage (Simulando persistencia DB segura para el demo)
+      const nuevoRegistro = {
+        id: Date.now(),
+        fecha: new Date().toLocaleTimeString(),
+        valor: pred
+      };
+      const historialAnterior = JSON.parse(localStorage.getItem('historico_sagemaker_db') || '[]');
+      const historialActualizado = [nuevoRegistro, ...historialAnterior].slice(0, 50); // Guardamos max 50
+      localStorage.setItem('historico_sagemaker_db', JSON.stringify(historialActualizado));
+      
+      // Actualizamos estado visual
+      cargarHistorial();
     } catch (err) {
       setError("Fallo en la conexión AWS. Verifica los logs del sistema.");
       console.error(err);
